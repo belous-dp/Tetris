@@ -4,5 +4,5 @@
  * @author Danila Belous
  */
 module belous.tetris.game {
-    exports belous.tetris.game;
+    exports belous.tetris.game.api;
 }
