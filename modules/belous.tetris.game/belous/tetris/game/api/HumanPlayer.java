@@ -5,4 +5,9 @@ public class HumanPlayer implements Player {
     public Move makeMove(State state) {
         return null;
     }
+
+    @Override
+    public void stateUpdated(State state) {
+
+    }
 }

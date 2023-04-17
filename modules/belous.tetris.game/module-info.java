@@ -5,4 +5,5 @@
  */
 module belous.tetris.game {
     exports belous.tetris.game.api;
+    exports belous.tetris.game.api.tetromino;
 }

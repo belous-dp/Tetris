@@ -21,4 +21,9 @@ public class CheatingPlayer implements Player {
         }
         return null;
     }
+
+    @Override
+    public void stateUpdated(State state) {
+
+    }
 }
