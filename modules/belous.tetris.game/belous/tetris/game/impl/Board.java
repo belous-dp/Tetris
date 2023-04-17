@@ -5,6 +5,7 @@ import belous.tetris.game.api.State;
 import belous.tetris.game.api.tetromino.Kind;
 import belous.tetris.game.api.tetromino.Tetromino;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 
@@ -27,12 +28,12 @@ public class Board {
         switch (move) {
             case LEFT -> state.moveIfCan(EditableState.MoveVal.Z, EditableState.MoveVal.N, active);
             case RIGHT -> state.moveIfCan(EditableState.MoveVal.Z, EditableState.MoveVal.P, active);
-            case CLOCKWISE -> state.replaceIfCan(active.x, active.y, active.get_current(), active.rotate_clockwise());
-            case COUNTERCLOCKWISE ->
-                    state.replaceIfCan(active.x, active.y, active.get_current(), active.rotate_counterclockwise());
+            case CLOCKWISE -> state.replaceIfCan(active.getX(), active.getY(),
+                    active.getCurrentRotation(), active.rotateClockwise());
+            case COUNTERCLOCKWISE -> state.replaceIfCan(active.getX(), active.getY(),
+                    active.getCurrentRotation(), active.rotateCounterclockwise());
             case DOWN -> state.moveIfCan(EditableState.MoveVal.P, EditableState.MoveVal.Z, active);
-            case PASS -> {
-            }
+            case PASS -> {}
         }
         return state;
     }
@@ -58,8 +59,19 @@ public class Board {
      * @return {@code False} if new tetromino cannot be placed on board, {@code True} otherwise.
      */
     private boolean introduceNewTetromino() {
-        Kind kind = tetrominoKinds[rand.nextInt(tetrominoKinds.length)];
-
-        return false;
+        Class<? extends Tetromino> clazz = tetrominoKinds[rand.nextInt(1, tetrominoKinds.length)].getClazz();
+        try {
+            byte[][] defaultTetrominoMask = (byte[][]) clazz
+                    .getDeclaredMethod("getDefaultRotation")
+                    .invoke(null);
+            byte w = (byte) defaultTetrominoMask[0].length;
+            byte x = 0;
+            byte y = (byte) (State.width / 2 - w / 2);
+            active = clazz.getConstructor(byte.class, byte.class).newInstance(x, y);
+            return state.drawIfCan(active);
+        } catch (IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException | InstantiationException e) {
+            throw new AssertionError(e);
+        }
     }
 }

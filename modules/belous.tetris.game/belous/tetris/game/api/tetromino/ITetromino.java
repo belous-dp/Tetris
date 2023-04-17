@@ -13,20 +13,28 @@ public class ITetromino extends Tetromino {
                     {0, 0, 0}       }
     };
 
+    public ITetromino(byte x, byte y) {
+        super(x, y);
+    }
+
     @Override
-    public byte[][] rotate_clockwise() {
+    public byte[][] rotateClockwise() {
         rotation ^= 1;
         return ROTATIONS[rotation];
     }
 
     @Override
-    public byte[][] rotate_counterclockwise() {
+    public byte[][] rotateCounterclockwise() {
         rotation ^= 1;
         return ROTATIONS[rotation];
     }
 
     @Override
-    public byte[][] get_current() {
+    public byte[][] getCurrentRotation() {
         return ROTATIONS[rotation];
+    }
+
+    public static byte[][] getDefaultRotation() {
+        return ROTATIONS[0];
     }
 }

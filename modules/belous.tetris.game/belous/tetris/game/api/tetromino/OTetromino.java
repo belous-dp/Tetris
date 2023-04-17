@@ -6,18 +6,26 @@ public class OTetromino extends Tetromino {
             {1, 1}
     };
 
+    public OTetromino(byte x, byte y) {
+        super(x, y);
+    }
+
     @Override
-    public byte[][] rotate_clockwise() {
+    public byte[][] rotateClockwise() {
         return ROTATIONS;
     }
 
     @Override
-    public byte[][] rotate_counterclockwise() {
+    public byte[][] rotateCounterclockwise() {
         return ROTATIONS;
     }
 
     @Override
-    public byte[][] get_current() {
+    public byte[][] getCurrentRotation() {
+        return ROTATIONS;
+    }
+
+    public static byte[][] getDefaultRotation() {
         return ROTATIONS;
     }
 }

@@ -1,12 +1,26 @@
 package belous.tetris.game.api.tetromino;
 
-public abstract class Tetromino {
-    public byte x, y;
+public abstract class Tetromino implements Rotatable {
+    private byte x, y;
 
-    public abstract byte[][] rotate_clockwise();
+    public Tetromino(byte x, byte y) {
+        this.x = x;
+        this.y = y;
+    }
 
-    public abstract byte[][] rotate_counterclockwise();
+    public byte getX() {
+        return x;
+    }
 
-    public abstract byte[][] get_current();
+    public void setX(byte x) {
+        this.x = x;
+    }
 
+    public byte getY() {
+        return y;
+    }
+
+    public void setY(byte y) {
+        this.y = y;
+    }
 }

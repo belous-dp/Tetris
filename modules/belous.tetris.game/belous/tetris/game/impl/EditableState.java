@@ -6,7 +6,6 @@ import belous.tetris.game.api.tetromino.Tetromino;
 
 public interface EditableState extends State {
     void setScore(int score);
-    void makeMove(Move move);
 
     void replaceIfCan(byte x, byte y, byte[][] lastMask, byte[][] newMask);
 
@@ -21,4 +20,6 @@ public interface EditableState extends State {
         }
     }
     boolean moveIfCan(MoveVal x, MoveVal y, Tetromino tetromino);
+
+    boolean drawIfCan(Tetromino tetromino);
 }

@@ -21,8 +21,12 @@ public class TTetromino extends Tetromino {
                     {0, 1, 0},      },
     };
 
+    public TTetromino(byte x, byte y) {
+        super(x, y);
+    }
+
     @Override
-    public byte[][] rotate_clockwise() {
+    public byte[][] rotateClockwise() {
         rotation--;
         rotation &= 0b11;
         System.out.println(rotation);
@@ -30,7 +34,7 @@ public class TTetromino extends Tetromino {
     }
 
     @Override
-    public byte[][] rotate_counterclockwise() {
+    public byte[][] rotateCounterclockwise() {
         rotation++;
         rotation &= 0b11;
         System.out.println(rotation);
@@ -38,7 +42,11 @@ public class TTetromino extends Tetromino {
     }
 
     @Override
-    public byte[][] get_current() {
+    public byte[][] getCurrentRotation() {
         return ROTATIONS[rotation];
+    }
+
+    public static byte[][] getDefaultRotation() {
+        return ROTATIONS[0];
     }
 }
