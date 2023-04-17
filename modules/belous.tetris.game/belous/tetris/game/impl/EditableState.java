@@ -6,19 +6,19 @@ import belous.tetris.game.api.tetromino.Tetromino;
 public interface EditableState extends State {
     void setScore(int score);
 
-    void replaceIfCan(byte x, byte y, boolean[][] lastMask, Tetromino next);
+    boolean replaceIfCan(byte x, byte y, boolean[][] lastMask, Tetromino next);
 
-    enum MoveVal {
-        P(1), N(-1), Z(0);
+    enum MoveDir {
+        LEFT(-1), RIGHT(1), DOWN(0);
         private final int val;
-        MoveVal(int val) {
+        MoveDir(int val) {
             this.val = val;
         }
         int val() {
             return val;
         }
     }
-    boolean moveIfCan(MoveVal x, MoveVal y, Tetromino tetromino);
+    boolean moveIfCan(MoveDir dir, Tetromino tetromino);
 
     boolean drawIfCan(Tetromino tetromino);
 }

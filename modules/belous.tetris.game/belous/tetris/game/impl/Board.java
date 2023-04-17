@@ -14,9 +14,10 @@ public class Board {
     private Tetromino active;
     private final EditableState state;
     private final Random rand;
+    private final static int START = 2;
 
     public Board() {
-        this.state = new StateImpl();
+        this.state = new StateImpl(START);
         this.rand = new Random(42);
     }
 
@@ -24,18 +25,17 @@ public class Board {
         return state;
     }
 
-    public State makeMove(Move move) {
-        switch (move) {
-            case LEFT -> state.moveIfCan(EditableState.MoveVal.Z, EditableState.MoveVal.N, active);
-            case RIGHT -> state.moveIfCan(EditableState.MoveVal.Z, EditableState.MoveVal.P, active);
+    public boolean makeMove(Move move) {
+        return switch (move) {
+            case LEFT -> state.moveIfCan(EditableState.MoveDir.LEFT, active);
+            case RIGHT -> state.moveIfCan(EditableState.MoveDir.RIGHT, active);
             case CLOCKWISE -> state.replaceIfCan(active.getX(), active.getY(),
                     active.getCurrentRotation(), active.rotateClockwise());
             case COUNTERCLOCKWISE -> state.replaceIfCan(active.getX(), active.getY(),
                     active.getCurrentRotation(), active.rotateCounterclockwise());
-            case DOWN -> state.moveIfCan(EditableState.MoveVal.P, EditableState.MoveVal.Z, active);
-            case PASS -> {}
-        }
-        return state;
+            case DOWN -> state.moveIfCan(EditableState.MoveDir.DOWN, active);
+            case PASS -> false;
+        };
     }
 
     /**
@@ -46,7 +46,7 @@ public class Board {
      *         {@code True} otherwise.
      */
     public boolean tick() {
-        boolean moved = state.moveIfCan(EditableState.MoveVal.P, EditableState.MoveVal.Z, active);
+        boolean moved = state.moveIfCan(EditableState.MoveDir.DOWN, active);
         if (!moved) {
             return introduceNewTetromino();
         }
@@ -65,10 +65,14 @@ public class Board {
                     .getDeclaredMethod("getDefaultRotation")
                     .invoke(null);
             byte w = (byte) defaultTetrominoMask[0].length;
-            byte x = 0;
             byte y = (byte) (State.width / 2 - w / 2);
-            active = clazz.getConstructor(byte.class, byte.class).newInstance(x, y);
-            return state.drawIfCan(active);
+            Tetromino newTetromino = clazz.getConstructor(byte.class, byte.class).newInstance((byte) START, y);
+            boolean introduced = state.drawIfCan(newTetromino);
+            if (introduced) {
+                active = newTetromino;
+                return true;
+            }
+            return false;
         } catch (IllegalAccessException | InvocationTargetException |
                  NoSuchMethodException | InstantiationException e) {
             throw new AssertionError(e);

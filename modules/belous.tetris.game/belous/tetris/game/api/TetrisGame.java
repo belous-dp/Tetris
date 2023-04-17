@@ -22,8 +22,10 @@ public class TetrisGame {
             if (System.nanoTime() - responseStart > 1000) {
                 return new GameResult(DefeatType.OUT_OF_TIME, state);
             }
-            state = board.makeMove(move);
-            player.stateUpdated(state);
+            if (board.makeMove(move)) {
+                state = board.getState();
+                player.stateUpdated(state);
+            }
             if (System.nanoTime() - loopStart >= speed) {
                 boolean ok = board.tick();
                 if (!ok) {
