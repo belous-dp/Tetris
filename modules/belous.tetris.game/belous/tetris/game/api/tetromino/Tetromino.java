@@ -1,7 +1,7 @@
 package belous.tetris.game.api.tetromino;
 
 public abstract class Tetromino implements Rotatable {
-    private byte x, y;
+    protected byte x, y;
 
     public Tetromino(byte x, byte y) {
         this.x = x;

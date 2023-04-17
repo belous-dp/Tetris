@@ -1,31 +1,36 @@
 package belous.tetris.game.api.tetromino;
 
+import belous.tetris.game.impl.Utils;
+
+import java.util.List;
+
 public class OTetromino extends Tetromino {
-    static private final byte[][] ROTATIONS = new byte[][]{
-            {1, 1},
-            {1, 1}
-    };
+    static private final boolean[][] ROTATIONS =
+            Utils.strsToBools(List.of(
+                    "**",
+                    "**"
+            ));
 
     public OTetromino(byte x, byte y) {
         super(x, y);
     }
 
     @Override
-    public byte[][] rotateClockwise() {
-        return ROTATIONS;
+    public Tetromino rotateClockwise() {
+        return this;
     }
 
     @Override
-    public byte[][] rotateCounterclockwise() {
-        return ROTATIONS;
+    public Tetromino rotateCounterclockwise() {
+        return this;
     }
 
     @Override
-    public byte[][] getCurrentRotation() {
+    public boolean[][] getCurrentRotation() {
         return ROTATIONS;
     }
 
-    public static byte[][] getDefaultRotation() {
+    public static boolean[][] getDefaultRotation() {
         return ROTATIONS;
     }
 }

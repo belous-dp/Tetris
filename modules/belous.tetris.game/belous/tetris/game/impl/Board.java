@@ -12,7 +12,7 @@ import java.util.Random;
 public class Board {
     private final static Kind[] tetrominoKinds = Kind.values();
     private Tetromino active;
-    private final StateImpl state;
+    private final EditableState state;
     private final Random rand;
 
     public Board() {
@@ -61,7 +61,7 @@ public class Board {
     private boolean introduceNewTetromino() {
         Class<? extends Tetromino> clazz = tetrominoKinds[rand.nextInt(1, tetrominoKinds.length)].getClazz();
         try {
-            byte[][] defaultTetrominoMask = (byte[][]) clazz
+            boolean[][] defaultTetrominoMask = (boolean[][]) clazz
                     .getDeclaredMethod("getDefaultRotation")
                     .invoke(null);
             byte w = (byte) defaultTetrominoMask[0].length;

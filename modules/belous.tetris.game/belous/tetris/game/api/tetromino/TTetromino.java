@@ -1,24 +1,31 @@
 package belous.tetris.game.api.tetromino;
 
+import belous.tetris.game.impl.Utils;
+
+import java.util.List;
+
 public class TTetromino extends Tetromino {
     private byte rotation = 0;
 
-    static private final byte[][][] ROTATIONS = new byte[][][]{
-            {       {0, 0, 0},
-                    {1, 1, 1},
-                    {0, 1, 0},      },
-
-            {       {0, 1, 0},
-                    {0, 1, 1},
-                    {0, 1, 0}       },
-
-            {       {0, 1, 0},
-                    {1, 1, 1},
-                    {0, 0, 0},      },
-
-            {       {0, 1, 0},
-                    {1, 1, 0},
-                    {0, 1, 0},      },
+    static private final boolean[][][] ROTATIONS = {
+            Utils.strsToBools(List.of(
+                    "***",
+                    ".*."
+            )),
+            Utils.strsToBools(List.of(
+                    ".*.",
+                    ".**",
+                    ".*."
+            )),
+            Utils.strsToBools(List.of(
+                    ".*.",
+                    "***"
+            )),
+            Utils.strsToBools(List.of(
+                    ".*.",
+                    "**.",
+                    ".*."
+            ))
     };
 
     public TTetromino(byte x, byte y) {
@@ -26,27 +33,35 @@ public class TTetromino extends Tetromino {
     }
 
     @Override
-    public byte[][] rotateClockwise() {
+    public Tetromino rotateClockwise() {
         rotation--;
         rotation &= 0b11;
-        System.out.println(rotation);
-        return ROTATIONS[rotation];
+        if (rotation == 3) {
+            x--; // to preserve middle cell
+        } else if (rotation == 0) {
+            x++; // to preserve middle cell
+        }
+        return this;
     }
 
     @Override
-    public byte[][] rotateCounterclockwise() {
+    public Tetromino rotateCounterclockwise() {
         rotation++;
         rotation &= 0b11;
-        System.out.println(rotation);
-        return ROTATIONS[rotation];
+        if (rotation == 1) {
+            x--; // to preserve middle cell
+        } else if (rotation == 0) {
+            x++; // to preserve middle cell
+        }
+        return this;
     }
 
     @Override
-    public byte[][] getCurrentRotation() {
+    public boolean[][] getCurrentRotation() {
         return ROTATIONS[rotation];
     }
 
-    public static byte[][] getDefaultRotation() {
+    public static boolean[][] getDefaultRotation() {
         return ROTATIONS[0];
     }
 }

@@ -1,13 +1,12 @@
 package belous.tetris.game.impl;
 
-import belous.tetris.game.api.Move;
 import belous.tetris.game.api.State;
 import belous.tetris.game.api.tetromino.Tetromino;
 
 public interface EditableState extends State {
     void setScore(int score);
 
-    void replaceIfCan(byte x, byte y, byte[][] lastMask, byte[][] newMask);
+    void replaceIfCan(byte x, byte y, boolean[][] lastMask, Tetromino next);
 
     enum MoveVal {
         P(1), N(-1), Z(0);

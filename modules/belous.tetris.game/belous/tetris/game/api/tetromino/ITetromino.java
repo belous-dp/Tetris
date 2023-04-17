@@ -1,16 +1,22 @@
 package belous.tetris.game.api.tetromino;
 
+import belous.tetris.game.impl.Utils;
+
+import java.util.List;
+
 public class ITetromino extends Tetromino {
     private byte rotation = 0;
 
-    static private final byte[][][] ROTATIONS = new byte[][][]{
-            {       {0, 1, 0},
-                    {0, 1, 0},
-                    {0, 1, 0},
-                    {0, 1, 0}       },
-            {       {0, 0, 0},
-                    {1, 1, 1},
-                    {0, 0, 0}       }
+    static private final boolean[][][] ROTATIONS = {
+            Utils.strsToBools(List.of(
+                    "****"
+            )),
+            Utils.strsToBools(List.of(
+                    "*",
+                    "*",
+                    "*",
+                    "*"
+            ))
     };
 
     public ITetromino(byte x, byte y) {
@@ -18,23 +24,33 @@ public class ITetromino extends Tetromino {
     }
 
     @Override
-    public byte[][] rotateClockwise() {
+    public Tetromino rotateClockwise() {
+        return rotate();
+    }
+
+    private ITetromino rotate() {
+        if (rotation == 0) {
+            x -= 2;
+            y += 2;
+        } else {
+            x += 2;
+            y -= 2;
+        }
         rotation ^= 1;
-        return ROTATIONS[rotation];
+        return this;
     }
 
     @Override
-    public byte[][] rotateCounterclockwise() {
-        rotation ^= 1;
-        return ROTATIONS[rotation];
+    public Tetromino rotateCounterclockwise() {
+        return rotate();
     }
 
     @Override
-    public byte[][] getCurrentRotation() {
+    public boolean[][] getCurrentRotation() {
         return ROTATIONS[rotation];
     }
 
-    public static byte[][] getDefaultRotation() {
+    public static boolean[][] getDefaultRotation() {
         return ROTATIONS[0];
     }
 }
