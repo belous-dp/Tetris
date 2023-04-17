@@ -1,11 +1,11 @@
 package belous.tetris.game.api;
 
-import belous.tetris.game.api.tetromino.Kind;
+import belous.tetris.game.api.tetromino.Tetromino;
 
 public interface State {
     byte height = 20;
     byte width = 10;
     int getScore();
 
-    Kind[][] getLayout(); // todo unmodifiable view
+    Matrix<Class<? extends Tetromino>> getLayout();
 }

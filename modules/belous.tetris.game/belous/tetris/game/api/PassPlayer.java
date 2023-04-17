@@ -1,13 +1,20 @@
 package belous.tetris.game.api;
 
-import belous.tetris.game.api.tetromino.Kind;
+import belous.tetris.game.api.tetromino.*;
+
+import java.util.Map;
 
 public class PassPlayer implements Player {
+    private static final Map<Class<? extends Tetromino>, Character> tetrominoToChar = Map.of(
+            ITetromino.class, 'I', OTetromino.class, 'O', TTetromino.class, 'T'
+    ); // todo maybe take from tetromino.Kinds?
+
     private void printState(State state) {
-        final Kind[][] layout = state.getLayout();
-        for (Kind[] kinds : layout) {
-            for (Kind kind : kinds) {
-                System.out.print(kind == Kind.E ? '.' : kind);
+        final Matrix<Class<? extends Tetromino>> layout = state.getLayout();
+        for (int i = 0; i < State.height; i++) {
+            for (int j = 0; j < State.width; j++) {
+                final Class<? extends Tetromino> type = layout.get(i, j);
+                System.out.print(type == null ? '.' : tetrominoToChar.get(type));
             }
             System.out.println();
         }
