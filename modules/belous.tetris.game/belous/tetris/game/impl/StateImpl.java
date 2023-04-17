@@ -99,8 +99,8 @@ public class StateImpl implements EditableState {
     @Override
     public boolean moveIfCan(MoveDir dir, Tetromino tetromino) {
         clear(tetromino);
-        final int dx = dir.val();
-        final int dy = dir == MoveDir.DOWN ? 1 : 0;
+        final int dx = dir == MoveDir.DOWN ? 1 : 0;
+        final int dy = dir.val();
         tetromino.addX(dx);
         tetromino.addY(dy);
         if (isFree(tetromino)) {

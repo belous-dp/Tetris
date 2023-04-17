@@ -12,14 +12,14 @@ public class TetrisGame {
     }
 
     public GameResult play() {
-        long speed = 1000_000; // ns
-        board.tick();
+        long speed = 1_000_000_000; // 1 sec
         State state = board.getState();
         long loopStart = System.nanoTime();
         while (true) {
             long responseStart = System.nanoTime();
             Move move = player.makeMove(state);
-            if (System.nanoTime() - responseStart > 1000) {
+//            System.out.println("response time=" + (System.nanoTime() - responseStart));
+            if (System.nanoTime() - responseStart > 10_000_000) {
                 return new GameResult(DefeatType.OUT_OF_TIME, state);
             }
             if (board.makeMove(move)) {
@@ -32,6 +32,7 @@ public class TetrisGame {
                     break;
                 }
                 state = board.getState();
+                player.stateUpdated(state); // todo remove
                 loopStart = System.nanoTime();
             }
         }

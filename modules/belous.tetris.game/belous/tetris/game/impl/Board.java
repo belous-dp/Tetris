@@ -19,6 +19,9 @@ public class Board {
     public Board() {
         this.state = new StateImpl(START);
         this.rand = new Random(42);
+        if (!introduceNewTetromino()) {
+            throw new AssertionError("cannot create new tetromino on empty field");
+        }
     }
 
     public State getState() {
