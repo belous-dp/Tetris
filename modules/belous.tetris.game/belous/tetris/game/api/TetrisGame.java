@@ -32,7 +32,7 @@ public class TetrisGame {
                     break;
                 }
                 state = board.getState();
-                player.stateUpdated(state); // todo remove
+//                player.stateUpdated(state); // todo remove
                 loopStart = System.nanoTime();
             }
         }

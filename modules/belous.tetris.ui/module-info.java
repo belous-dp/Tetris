@@ -4,4 +4,6 @@
  * @author Danila Belous
  */
 module belous.tetris.ui {
+    requires belous.tetris.game;
+    requires java.desktop;
 }
