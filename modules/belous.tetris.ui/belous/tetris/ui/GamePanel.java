@@ -24,7 +24,7 @@ public class GamePanel extends JPanel {
     private final static Map<Class<? extends Tetromino>, Color> COLOR_MAP = Map.of(
             ITetromino.class, Color.white, OTetromino.class, Color.red, TTetromino.class, Color.blue,
             JTetromino.class, Color.green, LTetromino.class, Color.yellow,
-            STetromino.class, Color.orange
+            STetromino.class, Color.orange, ZTetromino.class, Color.pink
     );
 
 
@@ -70,10 +70,8 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        System.out.println("Game panel clip: " + g.getClip());
+//        System.out.println("Game panel clip: " + g.getClip());
         if (cells == null) { // initial
-//            g.setColor(this.getBackground());
-//            g.fillRect(0, 0, WIDTH, HEIGHT);
             return;
         }
         final int h = cells.height();

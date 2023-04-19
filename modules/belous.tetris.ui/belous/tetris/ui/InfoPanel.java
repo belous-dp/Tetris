@@ -14,7 +14,11 @@ public class InfoPanel extends JPanel {
     }
 
     private static class ScoreLabel extends JLabel {
-        private final static String MESSAGE = "<html>Your score:<br>";
+        private final static String MESSAGE = """
+                <html><style>
+                p {text-align: center;}
+                </style>
+                <br><p>Your score:<br>""";
 
         private static String scoreToString(int score) {
             String res = Integer.toString(score);
@@ -46,9 +50,4 @@ public class InfoPanel extends JPanel {
         return new Dimension(WIDTH, HEIGHT);
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponents(g);
-        System.out.println("Info panel clip: " + g.getClip());
-    }
 }
