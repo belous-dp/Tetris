@@ -25,7 +25,7 @@ public class Matrix<T> {
     /**
      * Constructs unmodifiable matrix from the data.
      *
-     * @param data data to be stored
+     * @param data   data to be stored
      * @param startX index of the row to begin view with
      */
     public Matrix(final List<List<T>> data, final int startX) {
@@ -77,10 +77,10 @@ public class Matrix<T> {
     /**
      * Returns copy of submatrix {@code [fromX : fromX + height, fromY : fromY + height]}.
      *
-     * @param fromX X (row) index to begin copy from, inclusive
-     * @param fromY Y (column) index to begin copy from, inclusive
+     * @param fromX  X (row) index to begin copy from, inclusive
+     * @param fromY  Y (column) index to begin copy from, inclusive
      * @param height number of rows to include to the result matrix
-     * @param width number of columns to include to the result matrix
+     * @param width  number of columns to include to the result matrix
      * @return copy of submatrix {@code [fromX : fromX + height, fromY : fromY + height]}
      */
     public Matrix<T> copyOf(int fromX, int fromY, int height, int width) {
@@ -102,7 +102,7 @@ public class Matrix<T> {
      * @return width of the matrix
      */
     public int width() {
-        assert(!matrix.isEmpty());
+        assert (!matrix.isEmpty());
         return matrix.get(0).size();
     }
 }

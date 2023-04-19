@@ -25,7 +25,6 @@ public class TetrisGame {
         while (true) {
             long responseStart = System.nanoTime();
             Move move = player.makeMove(state);
-//            System.out.println("response time=" + (System.nanoTime() - responseStart));
             if (System.nanoTime() - responseStart > MAX_RESPONSE_TIME) {
                 throw new OutOfTimeException("player response took too long");
             }

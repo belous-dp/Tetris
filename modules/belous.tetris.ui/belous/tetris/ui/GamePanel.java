@@ -29,7 +29,6 @@ public class GamePanel extends JPanel {
 
 
     public GamePanel(final BlockingQueue<Move> queue) {
-        // set colors
         setBorder(BorderFactory.createLineBorder(Color.WHITE, BORDERS_THICKNESS));
         setBackground(Color.BLACK);
 
@@ -70,7 +69,6 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-//        System.out.println("Game panel clip: " + g.getClip());
         if (cells == null) { // initial
             return;
         }
@@ -80,9 +78,6 @@ public class GamePanel extends JPanel {
             for (int j = 0, y = updatedY; j < w; j++, y += SQUARE_SIDE_LEN) {
                 final Class<? extends Tetromino> type = cells.get(i, j);
                 g.setColor(type == null ? this.getBackground() : COLOR_MAP.get(type));
-//                System.out.println("" + y + " " + x);
-//                System.out.println("" + this.getSize().width + " " + this.getSize().height);
-
                 //noinspection SuspiciousNameCombination
                 g.fillRect(y, x, SQUARE_SIDE_LEN, SQUARE_SIDE_LEN);
             }

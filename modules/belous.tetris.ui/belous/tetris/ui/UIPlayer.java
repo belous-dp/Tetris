@@ -11,6 +11,7 @@ import java.util.concurrent.BlockingQueue;
 public class UIPlayer extends QueuePlayer {
     private final GamePanel gamePanel;
     private final InfoPanel infoPanel;
+
     UIPlayer(BlockingQueue<Move> moves, GamePanel gamePanel, InfoPanel infoPanel) {
         super(moves);
         this.gamePanel = gamePanel;
@@ -23,14 +24,11 @@ public class UIPlayer extends QueuePlayer {
         final int y = state.getLastUpdatedPosY();
         final int h = state.getLastUpdatedHeight();
         final int w = state.getLastUpdatedWidth();
-//        System.out.println("" + x + " " + y + " " + h + " " + w);
         final Matrix<Class<? extends Tetromino>> updated = state.getLayout().copyOf(x, y, h, w);
         final int px = GamePanel.indexToPixel(x);
         final int py = GamePanel.indexToPixel(y);
         final int ph = GamePanel.indexToPixel(h);
         final int pw = GamePanel.indexToPixel(w);
-//        System.out.println("" + px + " " + py + " " + ph + " " + pw);
-//        System.out.println("current score=" + score);
         javax.swing.SwingUtilities.invokeLater(() -> {
             gamePanel.updateState(px, py, updated);
             gamePanel.repaint(py, px, pw, ph); // inverted cuz different coordinate systems

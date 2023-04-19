@@ -1,6 +1,7 @@
 package belous.tetris;
 
 import belous.tetris.game.api.State;
+//import belous.tetris.game.api.tetromino.TTetromino;
 //import belous.tetris.game.impl.EditableState;
 
 import belous.tetris.game.api.Move;
@@ -13,13 +14,9 @@ public class CheatingPlayer implements Player {
 
     @Override
     public Move makeMove(State state) {
-        // todo
-//        System.out.println("init score=" + state.getScore());
 //        EditableState hehe = (EditableState) state;
-//        hehe.setScore(1337);
-//        if (state.getScore() == 1337) {
-//            System.out.println("cheating succeeded");
-//        }
+//        hehe.drawIfCan(new TTetromino((byte) 3, (byte) 4));
+//        System.out.println("cheating succeeded");
         return null;
     }
 

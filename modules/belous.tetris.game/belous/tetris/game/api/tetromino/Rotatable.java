@@ -1,9 +1,9 @@
 package belous.tetris.game.api.tetromino;
 
 public interface Rotatable {
-    Tetromino rotateClockwise();
+    void rotateClockwise();
 
-    Tetromino rotateCounterclockwise();
+    void rotateCounterclockwise();
 
     boolean[][] getCurrentRotation();
 }

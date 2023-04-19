@@ -49,21 +49,19 @@ public abstract class Tetromino implements Rotatable {
     }
 
     @Override
-    public Tetromino rotateClockwise() {
+    public void rotateClockwise() {
         x += dxClockwise[rotation];
         y += dyClockwise[rotation];
         rotation--;
         rotation &= 0b11;
-        return this;
     }
 
     @Override
-    public Tetromino rotateCounterclockwise() {
+    public void rotateCounterclockwise() {
         x += dxCounterclockwise[rotation];
         y += dyCounterclockwise[rotation];
         rotation++;
         rotation &= 0b11;
-        return this;
     }
 
     @Override

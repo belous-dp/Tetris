@@ -1,4 +1,5 @@
 package belous.tetris.ui;
+
 import belous.tetris.game.api.Move;
 import belous.tetris.game.api.QueuePlayer;
 import belous.tetris.game.api.TetrisGame;
@@ -8,12 +9,12 @@ import java.awt.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-public class Main {
-    private static void createAndShowGUI() {
+public final class UILayout {
+    public static void createAndShowGUI() {
         JFrame frame = new JFrame("Tetris");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        final ContentPane pane = new ContentPane();
+        final Container pane = frame.getContentPane();
         pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
         pane.setBackground(Color.BLACK);
 
@@ -42,9 +43,5 @@ public class Main {
         frame.setVisible(true);
 
         game.start();
-    }
-
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(Main::createAndShowGUI);
     }
 }
