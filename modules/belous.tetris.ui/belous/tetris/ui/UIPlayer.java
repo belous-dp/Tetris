@@ -16,7 +16,7 @@ public class UIPlayer extends QueuePlayer {
     }
 
     @Override
-    public void stateUpdated(State state) {
+    public void stateUpdated(State state, long score) {
         final int x = state.getLastUpdatedPosX();
         final int y = state.getLastUpdatedPosY();
         final int h = state.getLastUpdatedHeight();
@@ -28,6 +28,7 @@ public class UIPlayer extends QueuePlayer {
         final int ph = GamePanel.indexToPixel(h);
         final int pw = GamePanel.indexToPixel(w);
         System.out.println("" + px + " " + py + " " + ph + " " + pw);
+        System.out.println("current score=" + score);
         javax.swing.SwingUtilities.invokeLater(() -> {
             gamePanel.updateState(px, py, updated);
             gamePanel.repaint(py, px, pw, ph); // inverted cuz different coordinate systems

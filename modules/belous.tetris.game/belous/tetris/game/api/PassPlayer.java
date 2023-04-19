@@ -34,7 +34,7 @@ public class PassPlayer implements Player {
     }
 
     @Override
-    public void stateUpdated(State state) {
+    public void stateUpdated(State state, long score) {
         step++;
         printState(state);
     }

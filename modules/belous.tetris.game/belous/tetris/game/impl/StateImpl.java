@@ -12,15 +12,13 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public class StateImpl implements EditableState {
-    private int score;
-    private final int start;
+    private final int START;
     private final List<List<Class<? extends Tetromino>>> layout;
     private final Matrix<Class<? extends Tetromino>> returnedState;
     private int updatedX1, updatedY1, updatedX2, updatedY2;
 
 
     public StateImpl(int start) {
-        this.score = 0;
         layout = new ArrayList<>(HEIGHT + start);
         for (int i = 0; i < HEIGHT + start; i++) {
             final ArrayList<Class<? extends Tetromino>> row = new ArrayList<>(WIDTH);
@@ -33,12 +31,7 @@ public class StateImpl implements EditableState {
         updatedX1 = updatedY1 = 0;
         updatedX2 = State.HEIGHT;
         updatedY2 = State.WIDTH;
-        this.start = start;
-    }
-
-    @Override
-    public int getScore() {
-        return score;
+        this.START = start;
     }
 
     @Override
@@ -48,7 +41,7 @@ public class StateImpl implements EditableState {
 
     @Override
     public int getLastUpdatedPosX() {
-        return updatedX1 - start;
+        return updatedX1 - START;
     }
 
     @Override
@@ -71,11 +64,6 @@ public class StateImpl implements EditableState {
         updatedX2 = updatedY2 = Byte.MIN_VALUE;
     }
 
-    @Override
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     private void clear(Tetromino tetromino) {
         clear(tetromino.getX(), tetromino.getY(), tetromino.getCurrentRotation(), tetromino.getClass());
     }
@@ -83,6 +71,9 @@ public class StateImpl implements EditableState {
     @Override
     public boolean doIfCan(Tetromino tetromino, Consumer<Tetromino> modify,
                            Consumer<Tetromino> rollback) {
+        if (tetromino == null) {
+            return false;
+        }
         clearUpdated();
         clear(tetromino);
         modify.accept(tetromino);
@@ -99,7 +90,7 @@ public class StateImpl implements EditableState {
     @Override
     public boolean drawIfCan(Tetromino tetromino) {
         if (isFree(tetromino)) {
-            clearUpdated();
+//            clearUpdated();
             assign(tetromino);
             return true;
         } else {
@@ -149,6 +140,40 @@ public class StateImpl implements EditableState {
                             layout.get(x + i).get(y + j) == prevType);
                     layout.get(x + i).set(y + j, type);
                 }
+            }
+        }
+    }
+
+    @Override
+    public List<Byte> getBurnedLines(int start, int length) {
+        List<Byte> res = new ArrayList<>();
+        for (int i = start; i < start + length && i < layout.size(); i++) {
+            boolean full = true;
+            for (var c : layout.get(i)) {
+                if (c == null) {
+                    full = false;
+                    break;
+                }
+            }
+            if (full) {
+                res.add((byte) i);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public void moveLinesDown(int start, int count, int step) {
+        updatedX1 = start;
+        updatedX2 = start + count + step;
+        updatedY1 = 0;
+        updatedY2 = State.WIDTH;
+        for (int i = start + count - 1; i >= start; i--) {
+            List<Class<? extends Tetromino>> cur = layout.get(i);
+            List<Class<? extends Tetromino>> to = layout.get(i + step);
+            for (int j = 0; j < State.WIDTH; j++) {
+                to.set(j, cur.get(j));
+                cur.set(j, null);
             }
         }
     }

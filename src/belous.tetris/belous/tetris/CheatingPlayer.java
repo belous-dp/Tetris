@@ -13,17 +13,17 @@ public class CheatingPlayer implements Player {
 
     @Override
     public Move makeMove(State state) {
-        System.out.println("init score=" + state.getScore());
+        // todo
+//        System.out.println("init score=" + state.getScore());
 //        EditableState hehe = (EditableState) state;
 //        hehe.setScore(1337);
-        if (state.getScore() == 1337) {
-            System.out.println("cheating succeeded");
-        }
+//        if (state.getScore() == 1337) {
+//            System.out.println("cheating succeeded");
+//        }
         return null;
     }
 
     @Override
-    public void stateUpdated(State state) {
-
+    public void stateUpdated(State state, long score) {
     }
 }

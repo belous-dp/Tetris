@@ -1,12 +1,14 @@
 package belous.tetris.game.impl;
 
 import belous.tetris.game.api.Move;
+import belous.tetris.game.api.PassPlayer;
 import belous.tetris.game.api.State;
 import belous.tetris.game.api.tetromino.Kind;
 import belous.tetris.game.api.tetromino.Rotatable;
 import belous.tetris.game.api.tetromino.Tetromino;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Random;
 
 
@@ -15,7 +17,7 @@ public class Board {
     private Tetromino active;
     private final EditableState state;
     private final Random rand;
-    private final static int START = 2;
+    private final static int START = 2; // todo move to state
 
     public Board() {
         this.state = new StateImpl(START);
@@ -45,16 +47,24 @@ public class Board {
     /**
      * Moves active tetromino one step down.
      * Creates new tetromino if last active tetromino reached bottom of the board.
+     * Returns number of burned lines.
      *
-     * @return {@code False} if new tetromino needs to be created, and it cannot be placed on board,
-     *         {@code True} otherwise.
+     * @return -1 if new tetromino needs to be created, and it cannot be placed on board,
+     *         number of burned lines otherwise.
      */
-    public boolean tick() {
+    public int tick() {
         boolean moved = state.doIfCan(active, Tetromino::moveDown, Tetromino::moveUp);
         if (!moved) {
-            return introduceNewTetromino();
+            int burned = burnLines();
+            active = null;
+            if (burned == 0) {
+                boolean ok = introduceNewTetromino();
+                return ok ? 0 : -1;
+            } else {
+                return burned;
+            }
         }
-        return true;
+        return 0;
     }
 
     /**
@@ -81,5 +91,20 @@ public class Board {
                  NoSuchMethodException | InstantiationException e) {
             throw new AssertionError(e);
         }
+    }
+
+    private int burnLines() {
+        List<Byte> burned;
+        if (active != null) {
+            burned = state.getBurnedLines(active.getX(), Tetromino.MAX_SIZE);
+        } else {
+            burned = state.getBurnedLines(START, State.HEIGHT);
+        }
+        for (int i = burned.size() - 1; i >= 0; --i) {
+            int cur = burned.get(i);
+            int last = i > 0 ? burned.get(i - 1) : -1 + START;
+            state.moveLinesDown(last + 1, cur - last - 1, burned.size() - i);
+        }
+        return burned.size();
     }
 }

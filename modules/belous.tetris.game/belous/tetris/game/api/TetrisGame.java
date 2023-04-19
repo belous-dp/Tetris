@@ -7,6 +7,9 @@ import static java.lang.Thread.sleep;
 public class TetrisGame {
     private final Board board;
     private final Player player;
+    private static final long MAX_RESPONSE_TIME = 10_000_000; // 10 ms
+    private static final long DELAY_TIME = 10; // 10 ms
+    private static final int[] SCORING = {0, 40, 100, 300, 1200};
 
     public TetrisGame(final Player player) {
         this.board = new Board();
@@ -14,12 +17,11 @@ public class TetrisGame {
     }
 
     public GameResult play() throws InterruptedException {
-        long speed = 1_000_000_000; // 1 sec
-        final long MAX_RESPONSE_TIME = 10_000_000; // 10 ms
-        final long DELAY_TIME = 10; // 10 ms
+        long speed = 500_000_000; // 1 sec
+        long score = 0;
         State state = board.getState();
         long loopStart = System.nanoTime();
-        player.stateUpdated(state);
+        player.stateUpdated(state, score);
         while (true) {
             long responseStart = System.nanoTime();
             Move move = player.makeMove(state);
@@ -29,15 +31,16 @@ public class TetrisGame {
             }
             if (board.makeMove(move)) {
                 state = board.getState();
-                player.stateUpdated(state);
+                player.stateUpdated(state, score);
             }
             if (System.nanoTime() - loopStart >= speed) {
-                boolean ok = board.tick();
-                if (!ok) {
+                int burned = board.tick();
+                if (burned == -1) {
                     break;
                 }
+                score += SCORING[burned];
                 state = board.getState();
-                player.stateUpdated(state);
+                player.stateUpdated(state, score);
                 loopStart = System.nanoTime();
             }
             sleep(DELAY_TIME); // NOTE: busy waiting. maybe move player to separate thread?

@@ -1,6 +1,8 @@
 package belous.tetris.game.api.tetromino;
 
 public abstract class Tetromino implements Rotatable {
+    public static final int MAX_SIZE = 4;
+
     protected byte x, y;
 
     public Tetromino(byte x, byte y) {
