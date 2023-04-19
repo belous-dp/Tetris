@@ -8,7 +8,7 @@ public class TetrisGame {
     private final Board board;
     private final Player player;
     private static final long MAX_RESPONSE_TIME = 10_000_000; // 10 ms
-    private static final long DELAY_TIME = 10; // 10 ms
+    private static final long DELAY_TIME = 9; // 10 ms
     private static final int[] SCORING = {0, 40, 100, 300, 1200};
 
     public TetrisGame(final Player player) {

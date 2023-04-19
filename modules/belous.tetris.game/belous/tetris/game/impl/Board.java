@@ -20,7 +20,7 @@ public class Board {
 
     public Board() {
         this.state = new StateImpl(START);
-        this.rand = new Random(42);
+        this.rand = new Random(System.currentTimeMillis());
         if (!introduceNewTetromino()) {
             throw new AssertionError("cannot create new tetromino on empty field");
         }
