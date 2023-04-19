@@ -23,7 +23,7 @@ public class GamePanel extends JPanel {
 
     private final static Map<Class<? extends Tetromino>, Color> COLOR_MAP = Map.of(
             ITetromino.class, Color.white, OTetromino.class, Color.red, TTetromino.class, Color.blue,
-            JTetromino.class, Color.green
+            JTetromino.class, Color.green, LTetromino.class, Color.yellow
     );
 
 

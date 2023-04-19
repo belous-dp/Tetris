@@ -4,36 +4,36 @@ import belous.tetris.game.impl.Utils;
 
 import java.util.List;
 
-public class JTetromino extends Tetromino {
-    private byte rotation = 1;
+public class LTetromino extends Tetromino {
+    private byte rotation = 3;
 
     static private final boolean[][][] ROTATIONS = {
             Utils.strsToBools(List.of(
-                    ".*",
-                    ".*",
+                    "*.",
+                    "*.",
                     "**"
             )),
             Utils.strsToBools(List.of(
-                    "***",
-                    "..*"
+                    "..*",
+                    "***"
             )),
             Utils.strsToBools(List.of(
                     "**",
-                    "*.",
-                    "*."
+                    ".*",
+                    ".*"
             )),
             Utils.strsToBools(List.of(
-                    "*..",
-                    "***"
+                    "***",
+                    "*.."
             ))
     };
 
-    static private final byte[] DELTA_X_COUNTERCLOCKWISE = {+1, -1, 0, 0};
-    static private final byte[] DELTA_Y_COUNTERCLOCKWISE = {0, +1, -1, 0};
-    static private final byte[] DELTA_X_CLOCKWISE = {0, -1, +1, 0};
-    static private final byte[] DELTA_Y_CLOCKWISE = {0, 0, -1, +1};
+    static private final byte[] DELTA_X_COUNTERCLOCKWISE = {0, 0, +1, -1};
+    static private final byte[] DELTA_Y_COUNTERCLOCKWISE = {-1, 0, 0, +1};
+    static private final byte[] DELTA_X_CLOCKWISE = {+1, 0, 0, -1};
+    static private final byte[] DELTA_Y_CLOCKWISE = {-1, +1, 0, 0};
 
-    public JTetromino(byte x, byte y) {
+    public LTetromino(byte x, byte y) {
         super(x, y);
     }
 
@@ -61,6 +61,6 @@ public class JTetromino extends Tetromino {
     }
 
     public static boolean[][] getDefaultRotation() {
-        return ROTATIONS[1];
+        return ROTATIONS[3];
     }
 }
