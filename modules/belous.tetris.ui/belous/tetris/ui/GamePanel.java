@@ -43,7 +43,7 @@ public class GamePanel extends JPanel {
 
     private void setKeyBinding(final int key, final String actionName, final Move move) {
         this.getInputMap().put(KeyStroke.getKeyStroke(key, 0), actionName);
-        this.getActionMap().put("move_down", new AbstractAction() {
+        this.getActionMap().put(actionName, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean added = queue.offer(move);

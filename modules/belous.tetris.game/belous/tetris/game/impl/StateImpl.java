@@ -12,7 +12,7 @@ import static java.lang.Math.min;
 
 public class StateImpl implements EditableState {
     private int score;
-    private int start;
+    private final int start;
     private final List<List<Class<? extends Tetromino>>> layout;
     private final Matrix<Class<? extends Tetromino>> returnedState;
     private int updatedX1, updatedY1, updatedX2, updatedY2;
@@ -77,9 +77,9 @@ public class StateImpl implements EditableState {
 
     @Override
     public boolean replaceIfCan(byte x, byte y, boolean[][] lastMask, Tetromino next) {
+        clearUpdated();
         clear(x, y, lastMask, next.getClass());
         if (isFree(next)) {
-            clearUpdated();
             assign(next);
             return true;
         } else {
@@ -101,7 +101,7 @@ public class StateImpl implements EditableState {
         boolean free = true;
         for (int i = 0; i < mask.length && free; i++) {
             for (int j = 0; j < mask[i].length; j++) {
-                if (mask[i][j] && (x + i >= layout.size() ||
+                if (mask[i][j] && (x + i < 0 || y + j < 0 || x + i >= layout.size() ||
                         x + i <= layout.size() && y + j >= layout.get(x + i).size() ||
                         layout.get(x + i).get(y + j) != null)) {
                     free = false;
@@ -126,7 +126,8 @@ public class StateImpl implements EditableState {
         for (int i = 0; i < mask.length; i++) {
             for (int j = 0; j < mask[i].length; j++) {
                 if (mask[i][j]) {
-                    assert(x + i < layout.size() && y + j < layout.get(x + i).size() &&
+                    assert (x + i >= 0 && x + i < layout.size() &&
+                            y + j >= 0 && y + j < layout.get(x + i).size() &&
                             layout.get(x + i).get(y + j) == prevType);
                     layout.get(x + i).set(y + j, type);
                 }
@@ -140,13 +141,13 @@ public class StateImpl implements EditableState {
 
     @Override
     public boolean moveIfCan(MoveDir dir, Tetromino tetromino) {
+        clearUpdated();
         clear(tetromino);
         final int dx = dir == MoveDir.DOWN ? 1 : 0;
         final int dy = dir.val();
         tetromino.addX(dx);
         tetromino.addY(dy);
         if (isFree(tetromino)) {
-            clearUpdated();
             assign(tetromino);
             return true;
         } else {
