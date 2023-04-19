@@ -72,7 +72,7 @@ public class Board {
      * @return {@code False} if new tetromino cannot be placed on board, {@code True} otherwise.
      */
     private boolean introduceNewTetromino() {
-        Class<? extends Tetromino> clazz = tetrominoKinds[rand.nextInt(1, tetrominoKinds.length)].getClazz();
+        Class<? extends Tetromino> clazz = tetrominoKinds[rand.nextInt(0, tetrominoKinds.length)].getClazz();
         try {
             boolean[][] defaultTetrominoMask = (boolean[][]) clazz
                     .getDeclaredMethod("getDefaultRotation")

@@ -2,10 +2,7 @@ package belous.tetris.ui;
 
 import belous.tetris.game.api.Matrix;
 import belous.tetris.game.api.Move;
-import belous.tetris.game.api.tetromino.ITetromino;
-import belous.tetris.game.api.tetromino.OTetromino;
-import belous.tetris.game.api.tetromino.TTetromino;
-import belous.tetris.game.api.tetromino.Tetromino;
+import belous.tetris.game.api.tetromino.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +22,8 @@ public class GamePanel extends JPanel {
     private Matrix<Class<? extends Tetromino>> cells;
 
     private final static Map<Class<? extends Tetromino>, Color> COLOR_MAP = Map.of(
-            ITetromino.class, Color.white, OTetromino.class, Color.red, TTetromino.class, Color.blue
+            ITetromino.class, Color.white, OTetromino.class, Color.red, TTetromino.class, Color.blue,
+            JTetromino.class, Color.green
     );
 
 

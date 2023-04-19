@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+@SuppressWarnings("SuspiciousNameCombination")
 public class StateImpl implements EditableState {
     private final int START;
     private final List<List<Class<? extends Tetromino>>> layout;
