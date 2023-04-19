@@ -5,8 +5,6 @@ import belous.tetris.game.impl.Utils;
 import java.util.List;
 
 public class TTetromino extends Tetromino {
-    private byte rotation = 0;
-
     static private final boolean[][][] ROTATIONS = {
             Utils.strsToBools(List.of(
                     "***",
@@ -27,6 +25,7 @@ public class TTetromino extends Tetromino {
                     ".*"
             ))
     };
+    static private final byte DEFAULT_ROTATION_IDX = 0;
 
     static private final byte[] DELTA_X_COUNTERCLOCKWISE = {-1, 0, 0, +1};
     static private final byte[] DELTA_Y_COUNTERCLOCKWISE = {+1, -1, 0, 0};
@@ -34,33 +33,35 @@ public class TTetromino extends Tetromino {
     static private final byte[] DELTA_Y_CLOCKWISE = {0, -1, +1, 0};
 
     public TTetromino(byte x, byte y) {
-        super(x, y);
+        super(x, y, DEFAULT_ROTATION_IDX);
     }
 
     @Override
-    public Tetromino rotateClockwise() {
-        x += DELTA_X_CLOCKWISE[rotation];
-        y += DELTA_Y_CLOCKWISE[rotation];
-        rotation--;
-        rotation &= 0b11;
-        return this;
+    protected byte[] getDXClockwise() {
+        return DELTA_X_CLOCKWISE;
     }
 
     @Override
-    public Tetromino rotateCounterclockwise() {
-        x += DELTA_X_COUNTERCLOCKWISE[rotation];
-        y += DELTA_Y_COUNTERCLOCKWISE[rotation];
-        rotation++;
-        rotation &= 0b11;
-        return this;
+    protected byte[] getDYClockwise() {
+        return DELTA_Y_CLOCKWISE;
     }
 
     @Override
-    public boolean[][] getCurrentRotation() {
-        return ROTATIONS[rotation];
+    protected byte[] getDXCounterclockwise() {
+        return DELTA_X_COUNTERCLOCKWISE;
+    }
+
+    @Override
+    protected byte[] getDYCounterclockwise() {
+        return DELTA_Y_COUNTERCLOCKWISE;
+    }
+
+    @Override
+    protected boolean[][][] getRotations() {
+        return ROTATIONS;
     }
 
     public static boolean[][] getDefaultRotation() {
-        return ROTATIONS[0];
+        return ROTATIONS[DEFAULT_ROTATION_IDX];
     }
 }
