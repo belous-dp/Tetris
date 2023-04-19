@@ -31,32 +31,7 @@ public class ZTetromino extends Tetromino {
     static private final byte[] DELTA_Y = {+1, -1, +1, -1};
 
     public ZTetromino(byte x, byte y) {
-        super(x, y, DEFAULT_ROTATION_IDX);
-    }
-
-    @Override
-    protected byte[] getDXClockwise() {
-        return DELTA_X;
-    }
-
-    @Override
-    protected byte[] getDYClockwise() {
-        return DELTA_Y;
-    }
-
-    @Override
-    protected byte[] getDXCounterclockwise() {
-        return DELTA_X;
-    }
-
-    @Override
-    protected byte[] getDYCounterclockwise() {
-        return DELTA_Y;
-    }
-
-    @Override
-    protected boolean[][][] getRotations() {
-        return ROTATIONS;
+        super(x, y, DEFAULT_ROTATION_IDX, DELTA_X, DELTA_Y, DELTA_X, DELTA_Y, ROTATIONS);
     }
 
     public static boolean[][] getDefaultRotation() {

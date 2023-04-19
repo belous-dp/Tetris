@@ -28,32 +28,7 @@ public class OTetromino extends Tetromino {
     static private final byte[] DELTA = {0, 0, 0, 0};
 
     public OTetromino(byte x, byte y) {
-        super(x, y, DEFAULT_ROTATION_IDX);
-    }
-
-    @Override
-    protected byte[] getDXClockwise() {
-        return DELTA;
-    }
-
-    @Override
-    protected byte[] getDYClockwise() {
-        return DELTA;
-    }
-
-    @Override
-    protected byte[] getDXCounterclockwise() {
-        return DELTA;
-    }
-
-    @Override
-    protected byte[] getDYCounterclockwise() {
-        return DELTA;
-    }
-
-    @Override
-    protected boolean[][][] getRotations() {
-        return ROTATIONS;
+        super(x, y, DEFAULT_ROTATION_IDX, DELTA, DELTA, DELTA, DELTA, ROTATIONS);
     }
 
     public static boolean[][] getDefaultRotation() {

@@ -33,32 +33,8 @@ public class TTetromino extends Tetromino {
     static private final byte[] DELTA_Y_CLOCKWISE = {0, -1, +1, 0};
 
     public TTetromino(byte x, byte y) {
-        super(x, y, DEFAULT_ROTATION_IDX);
-    }
-
-    @Override
-    protected byte[] getDXClockwise() {
-        return DELTA_X_CLOCKWISE;
-    }
-
-    @Override
-    protected byte[] getDYClockwise() {
-        return DELTA_Y_CLOCKWISE;
-    }
-
-    @Override
-    protected byte[] getDXCounterclockwise() {
-        return DELTA_X_COUNTERCLOCKWISE;
-    }
-
-    @Override
-    protected byte[] getDYCounterclockwise() {
-        return DELTA_Y_COUNTERCLOCKWISE;
-    }
-
-    @Override
-    protected boolean[][][] getRotations() {
-        return ROTATIONS;
+        super(x, y, DEFAULT_ROTATION_IDX, DELTA_X_CLOCKWISE, DELTA_Y_CLOCKWISE,
+                DELTA_X_COUNTERCLOCKWISE, DELTA_Y_COUNTERCLOCKWISE, ROTATIONS);
     }
 
     public static boolean[][] getDefaultRotation() {
