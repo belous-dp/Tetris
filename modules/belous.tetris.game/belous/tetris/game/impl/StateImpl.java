@@ -6,6 +6,7 @@ import belous.tetris.game.api.tetromino.Tetromino;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -75,16 +76,33 @@ public class StateImpl implements EditableState {
         this.score = score;
     }
 
+    private void clear(Tetromino tetromino) {
+        clear(tetromino.getX(), tetromino.getY(), tetromino.getCurrentRotation(), tetromino.getClass());
+    }
+
     @Override
-    public boolean replaceIfCan(byte x, byte y, boolean[][] lastMask, Tetromino next) {
+    public boolean doIfCan(Tetromino tetromino, Consumer<Tetromino> modify,
+                           Consumer<Tetromino> rollback) {
         clearUpdated();
-        clear(x, y, lastMask, next.getClass());
-        if (isFree(next)) {
-            assign(next);
+        clear(tetromino);
+        modify.accept(tetromino);
+        if (isFree(tetromino)) {
+            assign(tetromino);
             return true;
         } else {
-            // roll back changes
-            assign(x, y, lastMask, next.getClass(), null);
+            rollback.accept(tetromino);
+            assign(tetromino);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean drawIfCan(Tetromino tetromino) {
+        if (isFree(tetromino)) {
+            clearUpdated();
+            assign(tetromino);
+            return true;
+        } else {
             return false;
         }
     }
@@ -93,8 +111,8 @@ public class StateImpl implements EditableState {
         assign(x, y, lastMask, null, type);
     }
 
-    private void clear(Tetromino tetromino) {
-        clear(tetromino.getX(), tetromino.getY(), tetromino.getCurrentRotation(), tetromino.getClass());
+    private boolean isFree(Tetromino tetromino) {
+        return isFree(tetromino.getX(), tetromino.getY(), tetromino.getCurrentRotation());
     }
 
     private boolean isFree(byte x, byte y, boolean[][] mask) {
@@ -112,8 +130,8 @@ public class StateImpl implements EditableState {
         return free;
     }
 
-    private boolean isFree(Tetromino tetromino) {
-        return isFree(tetromino.getX(), tetromino.getY(), tetromino.getCurrentRotation());
+    private void assign(Tetromino tetromino) {
+        assign(tetromino.getX(), tetromino.getY(), tetromino.getCurrentRotation(), tetromino.getClass(), null);
     }
 
     private void assign(byte x, byte y, boolean[][] mask, Class<? extends Tetromino> type,
@@ -132,41 +150,6 @@ public class StateImpl implements EditableState {
                     layout.get(x + i).set(y + j, type);
                 }
             }
-        }
-    }
-
-    private void assign(Tetromino tetromino) {
-        assign(tetromino.getX(), tetromino.getY(), tetromino.getCurrentRotation(), tetromino.getClass(), null);
-    }
-
-    @Override
-    public boolean moveIfCan(MoveDir dir, Tetromino tetromino) {
-        clearUpdated();
-        clear(tetromino);
-        final int dx = dir == MoveDir.DOWN ? 1 : 0;
-        final int dy = dir.val();
-        tetromino.addX(dx);
-        tetromino.addY(dy);
-        if (isFree(tetromino)) {
-            assign(tetromino);
-            return true;
-        } else {
-            // roll back changes
-            tetromino.addX(-dx);
-            tetromino.addY(-dy);
-            assign(tetromino);
-            return false;
-        }
-    }
-
-    @Override
-    public boolean drawIfCan(Tetromino tetromino) {
-        if (isFree(tetromino)) {
-            clearUpdated();
-            assign(tetromino);
-            return true;
-        } else {
-            return false;
         }
     }
 }

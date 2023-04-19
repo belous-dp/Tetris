@@ -16,12 +16,19 @@ public abstract class Tetromino implements Rotatable {
         return y;
     }
 
-    public void addX(int add) {
-        x += add;
+    public void moveLeft() {
+        y--;
     }
 
-    public void addY(int add) {
-        y += add;
+    public void moveRight() {
+        y++;
     }
 
+    public void moveUp() {
+        x--;
+    }
+
+    public void moveDown() {
+        x++;
+    }
 }

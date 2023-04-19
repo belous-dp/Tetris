@@ -30,8 +30,6 @@ public class PassPlayer implements Player {
 
     @Override
     public Move makeMove(State state) {
-//        step++;
-//        printState(state);
         return Move.PASS;
     }
 

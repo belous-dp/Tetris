@@ -3,6 +3,7 @@ package belous.tetris.game.impl;
 import belous.tetris.game.api.Move;
 import belous.tetris.game.api.State;
 import belous.tetris.game.api.tetromino.Kind;
+import belous.tetris.game.api.tetromino.Rotatable;
 import belous.tetris.game.api.tetromino.Tetromino;
 
 import java.lang.reflect.InvocationTargetException;
@@ -30,13 +31,13 @@ public class Board {
 
     public boolean makeMove(Move move) {
         return switch (move) {
-            case LEFT -> state.moveIfCan(EditableState.MoveDir.LEFT, active);
-            case RIGHT -> state.moveIfCan(EditableState.MoveDir.RIGHT, active);
-            case CLOCKWISE -> state.replaceIfCan(active.getX(), active.getY(),
-                    active.getCurrentRotation(), active.rotateClockwise());
-            case COUNTERCLOCKWISE -> state.replaceIfCan(active.getX(), active.getY(),
-                    active.getCurrentRotation(), active.rotateCounterclockwise());
-            case DOWN -> state.moveIfCan(EditableState.MoveDir.DOWN, active);
+            case LEFT -> state.doIfCan(active, Tetromino::moveLeft, Tetromino::moveRight);
+            case RIGHT -> state.doIfCan(active, Tetromino::moveRight, Tetromino::moveLeft);
+            case CLOCKWISE -> state.doIfCan(active,
+                    Rotatable::rotateClockwise, Rotatable::rotateCounterclockwise);
+            case COUNTERCLOCKWISE -> state.doIfCan(active,
+                    Rotatable::rotateCounterclockwise, Rotatable::rotateClockwise);
+            case DOWN -> state.doIfCan(active, Tetromino::moveDown, Tetromino::moveUp);
             case PASS -> false;
         };
     }
@@ -49,7 +50,7 @@ public class Board {
      *         {@code True} otherwise.
      */
     public boolean tick() {
-        boolean moved = state.moveIfCan(EditableState.MoveDir.DOWN, active);
+        boolean moved = state.doIfCan(active, Tetromino::moveDown, Tetromino::moveUp);
         if (!moved) {
             return introduceNewTetromino();
         }

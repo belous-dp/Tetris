@@ -39,6 +39,8 @@ public class GamePanel extends JPanel {
         setKeyBinding(KeyEvent.VK_LEFT, "move_left", Move.LEFT);
         setKeyBinding(KeyEvent.VK_RIGHT, "move_right", Move.RIGHT);
         setKeyBinding(KeyEvent.VK_DOWN, "move_down", Move.DOWN);
+        setKeyBinding(KeyEvent.VK_X, "rotate_clockwise", Move.CLOCKWISE);
+        setKeyBinding(KeyEvent.VK_Z, "rotate_counterclockwise", Move.COUNTERCLOCKWISE);
     }
 
     private void setKeyBinding(final int key, final String actionName, final Move move) {
@@ -82,8 +84,8 @@ public class GamePanel extends JPanel {
             for (int j = 0, y = updatedY; j < w; j++, y += SQUARE_SIDE_LEN) {
                 final Class<? extends Tetromino> type = cells.get(i, j);
                 g.setColor(type == null ? this.getBackground() : COLOR_MAP.get(type));
-                System.out.println("" + y + " " + x);
-                System.out.println("" + this.getSize().width + " " + this.getSize().height);
+//                System.out.println("" + y + " " + x);
+//                System.out.println("" + this.getSize().width + " " + this.getSize().height);
                 g.fillRect(y, x, SQUARE_SIDE_LEN, SQUARE_SIDE_LEN);
             }
         }

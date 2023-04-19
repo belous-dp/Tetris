@@ -13,20 +13,25 @@ public class TTetromino extends Tetromino {
                     ".*."
             )),
             Utils.strsToBools(List.of(
-                    ".*.",
-                    ".**",
-                    ".*."
+                    "*.",
+                    "**",
+                    "*."
             )),
             Utils.strsToBools(List.of(
                     ".*.",
                     "***"
             )),
             Utils.strsToBools(List.of(
-                    ".*.",
-                    "**.",
-                    ".*."
+                    ".*",
+                    "**",
+                    ".*"
             ))
     };
+
+    static private final byte[] DELTA_X_COUNTERCLOCKWISE = {-1, 0, 0, +1};
+    static private final byte[] DELTA_Y_COUNTERCLOCKWISE = {+1, -1, 0, 0};
+    static private final byte[] DELTA_X_CLOCKWISE = {-1, +1, 0, 0};
+    static private final byte[] DELTA_Y_CLOCKWISE = {0, -1, +1, 0};
 
     public TTetromino(byte x, byte y) {
         super(x, y);
@@ -34,25 +39,19 @@ public class TTetromino extends Tetromino {
 
     @Override
     public Tetromino rotateClockwise() {
+        x += DELTA_X_CLOCKWISE[rotation];
+        y += DELTA_Y_CLOCKWISE[rotation];
         rotation--;
         rotation &= 0b11;
-        if (rotation == 3) {
-            x--; // to preserve middle cell
-        } else if (rotation == 0) {
-            x++; // to preserve middle cell
-        }
         return this;
     }
 
     @Override
     public Tetromino rotateCounterclockwise() {
+        x += DELTA_X_COUNTERCLOCKWISE[rotation];
+        y += DELTA_Y_COUNTERCLOCKWISE[rotation];
         rotation++;
         rotation &= 0b11;
-        if (rotation == 1) {
-            x--; // to preserve middle cell
-        } else if (rotation == 0) {
-            x++; // to preserve middle cell
-        }
         return this;
     }
 
