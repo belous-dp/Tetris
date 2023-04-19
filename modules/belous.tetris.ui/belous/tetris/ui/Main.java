@@ -19,16 +19,20 @@ public class Main {
 
         final BlockingQueue<Move> queue = new ArrayBlockingQueue<>(20);
 
+        final InfoPanel infoPanel = new InfoPanel();
+        pane.add(infoPanel);
+        pane.add(Box.createRigidArea(new Dimension(5, 0)));
         final GamePanel gamePanel = new GamePanel(queue);
         pane.add(gamePanel);
-//        pane.add(Box.createRigidArea(new Dimension(10, 0)));
-//        pane.add(new GamePanel()); // todo info panel
 
         Thread game = new Thread(() -> {
-            QueuePlayer player = new UIPlayer(queue, gamePanel);
+            QueuePlayer player = new UIPlayer(queue, gamePanel, infoPanel);
             TetrisGame tg = new TetrisGame(player);
             try {
-                tg.play();
+                long score = tg.play();
+                System.out.println();
+                System.out.println("Your score: " + score);
+                System.out.println();
             } catch (InterruptedException ignore) {}
         });
 

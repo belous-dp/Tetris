@@ -16,9 +16,9 @@ public class TetrisGame {
         this.player = player;
     }
 
-    public GameResult play() throws InterruptedException {
-        long speed = 500_000_000; // 1 sec
-        long score = 0;
+    public long play() throws InterruptedException {
+        long speed = 500_000_000; // 0.5 sec
+        int score = 0;
         State state = board.getState();
         long loopStart = System.nanoTime();
         player.stateUpdated(state, score);
@@ -27,7 +27,7 @@ public class TetrisGame {
             Move move = player.makeMove(state);
 //            System.out.println("response time=" + (System.nanoTime() - responseStart));
             if (System.nanoTime() - responseStart > MAX_RESPONSE_TIME) {
-                return new GameResult(DefeatType.OUT_OF_TIME, state);
+                throw new OutOfTimeException("player response took too long");
             }
             if (board.makeMove(move)) {
                 state = board.getState();
@@ -45,6 +45,6 @@ public class TetrisGame {
             }
             sleep(DELAY_TIME); // NOTE: busy waiting. maybe move player to separate thread?
         }
-        return new GameResult(DefeatType.OUT_OF_SPACE, state);
+        return score;
     }
 }

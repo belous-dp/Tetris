@@ -1,7 +1,6 @@
 package belous.tetris.game.impl;
 
 import belous.tetris.game.api.Move;
-import belous.tetris.game.api.PassPlayer;
 import belous.tetris.game.api.State;
 import belous.tetris.game.api.tetromino.Kind;
 import belous.tetris.game.api.tetromino.Rotatable;
@@ -17,7 +16,7 @@ public class Board {
     private Tetromino active;
     private final EditableState state;
     private final Random rand;
-    private final static int START = 2; // todo move to state
+    private final static int START = 2; // todo: move to State
 
     public Board() {
         this.state = new StateImpl(START);

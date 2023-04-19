@@ -36,20 +36,19 @@ public class GamePanel extends JPanel {
 
         this.queue = queue;
 
-        setKeyBinding(KeyEvent.VK_LEFT, "move_left", Move.LEFT);
-        setKeyBinding(KeyEvent.VK_RIGHT, "move_right", Move.RIGHT);
-        setKeyBinding(KeyEvent.VK_DOWN, "move_down", Move.DOWN);
-        setKeyBinding(KeyEvent.VK_X, "rotate_clockwise", Move.CLOCKWISE);
-        setKeyBinding(KeyEvent.VK_Z, "rotate_counterclockwise", Move.COUNTERCLOCKWISE);
+        setMoveKeyBinding(KeyEvent.VK_LEFT, "move_left", Move.LEFT);
+        setMoveKeyBinding(KeyEvent.VK_RIGHT, "move_right", Move.RIGHT);
+        setMoveKeyBinding(KeyEvent.VK_DOWN, "move_down", Move.DOWN);
+        setMoveKeyBinding(KeyEvent.VK_X, "rotate_clockwise", Move.CLOCKWISE);
+        setMoveKeyBinding(KeyEvent.VK_Z, "rotate_counterclockwise", Move.COUNTERCLOCKWISE);
     }
 
-    private void setKeyBinding(final int key, final String actionName, final Move move) {
+    private void setMoveKeyBinding(final int key, final String actionName, final Move move) {
         this.getInputMap().put(KeyStroke.getKeyStroke(key, 0), actionName);
         this.getActionMap().put(actionName, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean added = queue.offer(move);
-                assert(added);
+                queue.offer(move);
             }
         });
     }
@@ -72,7 +71,7 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        System.out.println(g.getClip());
+        System.out.println("Game panel clip: " + g.getClip());
         if (cells == null) { // initial
 //            g.setColor(this.getBackground());
 //            g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -86,6 +85,8 @@ public class GamePanel extends JPanel {
                 g.setColor(type == null ? this.getBackground() : COLOR_MAP.get(type));
 //                System.out.println("" + y + " " + x);
 //                System.out.println("" + this.getSize().width + " " + this.getSize().height);
+
+                //noinspection SuspiciousNameCombination
                 g.fillRect(y, x, SQUARE_SIDE_LEN, SQUARE_SIDE_LEN);
             }
         }

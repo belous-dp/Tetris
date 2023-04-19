@@ -24,6 +24,6 @@ public class CheatingPlayer implements Player {
     }
 
     @Override
-    public void stateUpdated(State state, long score) {
+    public void stateUpdated(State state, int score) {
     }
 }
