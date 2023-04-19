@@ -18,8 +18,8 @@ public class PassPlayer implements Player {
     private void printState(State state) {
         System.out.println("===== step " + step + " =====");
         final Matrix<Class<? extends Tetromino>> layout = state.getLayout();
-        for (int i = 0; i < State.height; i++) {
-            for (int j = 0; j < State.width; j++) {
+        for (int i = 0; i < State.HEIGHT; i++) {
+            for (int j = 0; j < State.WIDTH; j++) {
                 final Class<? extends Tetromino> type = layout.get(i, j);
                 System.out.print(type == null ? '.' : tetrominoToChar.get(type));
             }

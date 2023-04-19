@@ -41,6 +41,23 @@ public class Matrix<T> {
     }
 
     /**
+     * @see #copyOf(int, int, int, int)
+     */
+    private Matrix(final Matrix<T> data, int fromX, int fromY, int height, int width) {
+        List<List<T>> rows = new ArrayList<>(height);
+        for (int i = fromX; i < fromX + height; i++) {
+            List<T> row = data.get(i);
+            List<T> rowCopy = new ArrayList<>(width);
+            for (int j = fromY; j < fromY + width; j++) {
+                rowCopy.add(row.get(j));
+            }
+            rows.add(Collections.unmodifiableList(rowCopy));
+        }
+        this.matrix = Collections.unmodifiableList(rows);
+        this.startX = 0;
+    }
+
+    /**
      * Returns element of the matrix.
      *
      * @param x first index (row) of the element
@@ -51,5 +68,41 @@ public class Matrix<T> {
      */
     public T get(int x, int y) {
         return matrix.get(x + startX).get(y);
+    }
+
+    private List<T> get(int x) {
+        return matrix.get(x + startX);
+    }
+
+    /**
+     * Returns copy of submatrix {@code [fromX : fromX + height, fromY : fromY + height]}.
+     *
+     * @param fromX X (row) index to begin copy from, inclusive
+     * @param fromY Y (column) index to begin copy from, inclusive
+     * @param height number of rows to include to the result matrix
+     * @param width number of columns to include to the result matrix
+     * @return copy of submatrix {@code [fromX : fromX + height, fromY : fromY + height]}
+     */
+    public Matrix<T> copyOf(int fromX, int fromY, int height, int width) {
+        return new Matrix<>(this, fromX, fromY, height, width);
+    }
+
+    /**
+     * Returns height of the matrix.
+     *
+     * @return height of the matrix
+     */
+    public int height() {
+        return matrix.size() - startX;
+    }
+
+    /**
+     * Returns width of the matrix.
+     *
+     * @return width of the matrix
+     */
+    public int width() {
+        assert(!matrix.isEmpty());
+        return matrix.get(0).size();
     }
 }

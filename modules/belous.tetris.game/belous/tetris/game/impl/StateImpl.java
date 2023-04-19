@@ -1,27 +1,38 @@
 package belous.tetris.game.impl;
 
 import belous.tetris.game.api.Matrix;
+import belous.tetris.game.api.State;
 import belous.tetris.game.api.tetromino.Tetromino;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class StateImpl implements EditableState {
     private int score;
+    private int start;
     private final List<List<Class<? extends Tetromino>>> layout;
     private final Matrix<Class<? extends Tetromino>> returnedState;
+    private int updatedX1, updatedY1, updatedX2, updatedY2;
+
 
     public StateImpl(int start) {
         this.score = 0;
-        layout = new ArrayList<>(height + start);
-        for (int i = 0; i < height + start; i++) {
-            final ArrayList<Class<? extends Tetromino>> row = new ArrayList<>(width);
-            for (int j = 0; j < width; j++) {
+        layout = new ArrayList<>(HEIGHT + start);
+        for (int i = 0; i < HEIGHT + start; i++) {
+            final ArrayList<Class<? extends Tetromino>> row = new ArrayList<>(WIDTH);
+            for (int j = 0; j < WIDTH; j++) {
                 row.add(null);
             }
             layout.add(row);
         }
         returnedState = new Matrix<>(layout, start);
+        updatedX1 = updatedY1 = 0;
+        updatedX2 = State.HEIGHT;
+        updatedY2 = State.WIDTH;
+        this.start = start;
     }
 
     @Override
@@ -35,6 +46,31 @@ public class StateImpl implements EditableState {
     }
 
     @Override
+    public int getLastUpdatedPosX() {
+        return updatedX1 - start;
+    }
+
+    @Override
+    public int getLastUpdatedPosY() {
+        return updatedY1;
+    }
+
+    @Override
+    public int getLastUpdatedHeight() {
+        return updatedX2 - updatedX1;
+    }
+
+    @Override
+    public int getLastUpdatedWidth() {
+        return updatedY2 - updatedY1;
+    }
+
+    private void clearUpdated() {
+        updatedX1 = updatedY1 = Byte.MAX_VALUE;
+        updatedX2 = updatedY2 = Byte.MIN_VALUE;
+    }
+
+    @Override
     public void setScore(int score) {
         this.score = score;
     }
@@ -43,6 +79,7 @@ public class StateImpl implements EditableState {
     public boolean replaceIfCan(byte x, byte y, boolean[][] lastMask, Tetromino next) {
         clear(x, y, lastMask, next.getClass());
         if (isFree(next)) {
+            clearUpdated();
             assign(next);
             return true;
         } else {
@@ -81,6 +118,11 @@ public class StateImpl implements EditableState {
 
     private void assign(byte x, byte y, boolean[][] mask, Class<? extends Tetromino> type,
                         Class<? extends Tetromino> prevType) {
+        updatedX1 = min(updatedX1, x);
+        updatedY1 = min(updatedY1, y);
+        updatedX2 = max(updatedX2, x + mask.length);
+        updatedY2 = max(updatedY2, y + mask[0].length);
+
         for (int i = 0; i < mask.length; i++) {
             for (int j = 0; j < mask[i].length; j++) {
                 if (mask[i][j]) {
@@ -104,6 +146,7 @@ public class StateImpl implements EditableState {
         tetromino.addX(dx);
         tetromino.addY(dy);
         if (isFree(tetromino)) {
+            clearUpdated();
             assign(tetromino);
             return true;
         } else {
@@ -118,6 +161,7 @@ public class StateImpl implements EditableState {
     @Override
     public boolean drawIfCan(Tetromino tetromino) {
         if (isFree(tetromino)) {
+            clearUpdated();
             assign(tetromino);
             return true;
         } else {

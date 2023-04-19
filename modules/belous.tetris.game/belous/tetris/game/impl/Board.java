@@ -68,7 +68,7 @@ public class Board {
                     .getDeclaredMethod("getDefaultRotation")
                     .invoke(null);
             byte w = (byte) defaultTetrominoMask[0].length;
-            byte y = (byte) (State.width / 2 - w / 2);
+            byte y = (byte) (State.WIDTH / 2 - w / 2);
             Tetromino newTetromino = clazz.getConstructor(byte.class, byte.class).newInstance((byte) START, y);
             boolean introduced = state.drawIfCan(newTetromino);
             if (introduced) {
